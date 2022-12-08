@@ -32,7 +32,7 @@ public final class MusicGroupImpl implements MusicGroup {
     @Override
     public Stream<String> orderedSongNames() {
         return this.songs.stream()
-                .map(s -> s.songName)
+                .map(Song::getSongName)
                 .sorted(String::compareTo);
     }
 
