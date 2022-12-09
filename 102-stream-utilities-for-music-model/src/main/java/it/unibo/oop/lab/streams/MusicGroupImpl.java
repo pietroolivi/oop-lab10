@@ -8,11 +8,8 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.Set;
 import java.util.Map.Entry;
-import java.util.function.BinaryOperator;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.Collectors.*;
 
 /**
  *
@@ -56,7 +53,7 @@ public final class MusicGroupImpl implements MusicGroup {
 
     @Override
     public int countSongs(final String albumName) {
-        return (int)this.songs.stream()
+        return (int) this.songs.stream()
                 .map(Song::getAlbumName)
                 .filter(Optional::isPresent)
                 .filter(albOpt -> albOpt.get().equals(albumName))
@@ -65,7 +62,7 @@ public final class MusicGroupImpl implements MusicGroup {
 
     @Override
     public int countSongsInNoAlbum() {
-        return (int)this.songs.stream()
+        return (int) this.songs.stream()
                 .map(Song::getAlbumName)
                 .filter(Optional::isEmpty)
                 .count();
