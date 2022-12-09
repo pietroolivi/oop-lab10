@@ -1,12 +1,18 @@
 package it.unibo.oop.lab.streams;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.Set;
+import java.util.Map.Entry;
+import java.util.function.BinaryOperator;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.Collectors.*;
 
 /**
  *
@@ -67,17 +73,30 @@ public final class MusicGroupImpl implements MusicGroup {
 
     @Override
     public OptionalDouble averageDurationOfSongs(final String albumName) {
-        return null;
+        return this.songs.stream()
+                .filter(s -> s.getAlbumName().isPresent())
+                .filter(s -> s.getAlbumName().get().equals(albumName))
+                .mapToDouble(Song::getDuration)
+                .average();
     }
 
     @Override
     public Optional<String> longestSong() {
-        return null;
+        return this.songs.stream()
+                .reduce((s1, s2) -> s1.getDuration() > s2.getDuration() ? s1 : s2)
+                .map(Song::getSongName);
     }
 
     @Override
     public Optional<String> longestAlbum() {
-        return null;
+        return this.songs.stream()
+                .filter(s -> s.getAlbumName().isPresent())
+                .collect(Collectors.groupingBy(
+                        Song::getAlbumName,
+                        Collectors.summingDouble(Song::getDuration)))
+                .entrySet().stream()
+                .collect(Collectors.maxBy(Comparator.comparingDouble(Entry::getValue)))
+                .flatMap(Entry::getKey);
     }
 
     private static final class Song {
