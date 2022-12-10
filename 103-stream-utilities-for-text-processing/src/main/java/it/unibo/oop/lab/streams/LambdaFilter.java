@@ -45,12 +45,12 @@ public final class LambdaFilter extends JFrame {
         CHARS_COUNT("Count the number of chars", s -> Integer.toString(s.length())),
         LINES_COUNT("Count the number of lines", s -> Long.toString(s.lines().count())),
         WORDS_IN_ORDER("Words in alphabetical order", s -> {
-                return Arrays.asList(s.split("\\s")).stream()
+                return Arrays.asList(s.split("\\s", 0)).stream()
                 .sorted(String::compareTo)
                 .collect(Collectors.joining("\n"));
         }),
         OCCURENCIES_COUNT("Count for each word", s -> {
-                return Arrays.asList(s.split("\\s")).stream()
+                return Arrays.asList(s.split("\\s", 0)).stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet().stream()
                 .map(Object::toString)
